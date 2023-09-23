@@ -1,0 +1,33 @@
+server:
+  profiles:
+    active: default
+
+  port: 8081
+
+  tomcat:
+    max-keep-alive-requests: 100
+    max-connections: 8192
+    connection-timeout: 5s
+    accept-count: 100
+    max-swallow-size: 2MB
+    threads:
+      min-spare: 50
+      max: 300
+
+spring:
+  application:
+    name: spring-boot-multi-tenant
+
+multitenant:
+  master:
+    datasource:
+      url: jdbc:postgresql://localhost:5432/multitenant
+      username: postgres
+      password: "root"
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      driver-class-name: org.postgresql.Driver
+      connection-timeout: 20000
+      max-pool-size: 250
+      idle-timeout: 300000
+      min-idle: 5
+      pool-name: multitenant-connection-pool

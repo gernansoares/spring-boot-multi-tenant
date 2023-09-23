@@ -1,0 +1,45 @@
+package com.multitenant.example.domain.controller;
+
+import com.multitenant.example.domain.dto.NewUserDTO;
+import com.multitenant.example.domain.entity.TestUser;
+import com.multitenant.example.domain.service.TestUserService;
+import com.multitenant.example.tenant.config.TenantContext;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/newuser")
+@Slf4j
+public class NewTestUserController {
+
+    @Autowired
+    private TestUserService testUserService;
+
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
+    @Operation(summary = "Creates a new user and returns its username")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User created"),
+            @ApiResponse(responseCode = "400", description = "Password/confirmation does not match | Username already in use"),
+    })
+    public ResponseEntity<String> create(@RequestBody @Valid NewUserDTO newUserDto) {
+        TenantContext.setCurrentTenant(newUserDto.getTenantId());
+        TestUser user = TestUser.of(newUserDto);
+
+        log.info("Adding user {}", user.getUsername());
+
+        user = testUserService.create(user, newUserDto.getPasswordConfirm());
+
+        log.info("User {} added as {} successfully", newUserDto.getUsername(), user.getUsername());
+
+        return ResponseEntity.ok(user.getUsername());
+    }
+
+}
