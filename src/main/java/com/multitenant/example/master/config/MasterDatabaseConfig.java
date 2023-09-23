@@ -5,9 +5,9 @@ import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -18,8 +18,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+/**
+ * Defines configuration for the master (default) database which should be used to manage tenants or the app
+ * Every bellow com.multitenant.example.tenant will be automatically scanned to be part of the master scope
+ */
 @Configuration
 @EnableTransactionManagement
+@ComponentScan(basePackages = {"com.multitenant.example.tenant.*"})
 @EnableJpaRepositories(basePackages = {"com.multitenant.example.tenant.*"},
         entityManagerFactoryRef = "masterEntityManagerFactory",
         transactionManagerRef = "masterTransactionManager")
@@ -46,15 +51,22 @@ public class MasterDatabaseConfig {
     @Primary
     @Bean(name = "masterEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean masterEntityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 
-        em.setDataSource(getMasterDataSource());
-        em.setPackagesToScan("com.multitenant.example.tenant");
-        em.setPersistenceUnitName("multitenant-persistence-unit");
-        em.setJpaVendorAdapter(vendorAdapter);
-        em.setJpaProperties(hibernateProperties());
-        return em;
+        factory.setDataSource(getMasterDataSource());
+        factory.setPackagesToScan("com.multitenant.example.tenant");
+        factory.setPersistenceUnitName("multitenant-persistence-unit");
+        factory.setJpaVendorAdapter(vendorAdapter);
+
+        Properties properties = new Properties();
+        properties.put(org.hibernate.cfg.Environment.DIALECT, masterDatabaseConfigProperties.getDialect());
+        properties.put(org.hibernate.cfg.Environment.SHOW_SQL, false);
+        properties.put(org.hibernate.cfg.Environment.FORMAT_SQL, true);
+        properties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "update");
+        factory.setJpaProperties(properties);
+
+        return factory;
     }
 
     @Bean(name = "masterTransactionManager")
@@ -64,17 +76,4 @@ public class MasterDatabaseConfig {
         return transactionManager;
     }
 
-    @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-        return new PersistenceExceptionTranslationPostProcessor();
-    }
-
-    private Properties hibernateProperties() {
-        Properties properties = new Properties();
-        properties.put(org.hibernate.cfg.Environment.DIALECT, masterDatabaseConfigProperties.getDialect());
-        properties.put(org.hibernate.cfg.Environment.SHOW_SQL, false);
-        properties.put(org.hibernate.cfg.Environment.FORMAT_SQL, true);
-        properties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "update");
-        return properties;
-    }
 }

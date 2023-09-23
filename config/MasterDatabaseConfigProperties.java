@@ -1,4 +1,4 @@
-package com.multitenant.example.tenant.config;
+package com.multitenant.example.master.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

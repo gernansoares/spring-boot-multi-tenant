@@ -4,10 +4,13 @@ import org.apache.logging.log4j.util.Strings;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
 import org.springframework.stereotype.Component;
 
+/**
+ * Resolves the tenant of the active thread through the TenantContext
+ */
 @Component
 public class TenantIdentifierResolver implements CurrentTenantIdentifierResolver {
 
-    public static final String DEFAULT_TENANT_ID = "demo";
+    public static final String DEFAULT_TENANT_ID = "tenant";
 
     @Override
     public String resolveCurrentTenantIdentifier() {
@@ -19,4 +22,5 @@ public class TenantIdentifierResolver implements CurrentTenantIdentifierResolver
     public boolean validateExistingCurrentSessions() {
         return true;
     }
+
 }

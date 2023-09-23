@@ -7,20 +7,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+
+/**
+ * Creates new datasources for each tenant
+ */
 @Component
 @Slf4j
 public class DataSourceFactory {
 
-    private final String POSTGRES_DRIVER = "org.postgresql.Driver";
     private final String CONNECTION_POOL_NAME = "%s-connection-pool";
-    private final Long CONNECTION_TIMEOUT = 10000L;
-    private final Long IDLE_TIMEOUT = 200000L;
-    private final Integer MIN_IDLE = 3;
-    private final Integer POOL_SIZE = 50;
 
     public DataSource create(Tenant tenant) {
-        log.info("Creating datasource for {}", tenant.getConnection().getDatabase());
-
         HikariDataSource ds = new HikariDataSource();
         TenantConnection connectionInfo = tenant.getConnection();
 
@@ -29,11 +26,11 @@ public class DataSourceFactory {
         ds.setJdbcUrl(connectionInfo.getUrl());
         ds.setJdbcUrl(connectionInfo.getUrl());
         ds.setPoolName(String.format(CONNECTION_POOL_NAME, connectionInfo.getDatabase()));
-        ds.setDriverClassName(POSTGRES_DRIVER);
-        ds.setConnectionTimeout(CONNECTION_TIMEOUT);
-        ds.setIdleTimeout(IDLE_TIMEOUT);
-        ds.setMinimumIdle(MIN_IDLE);
-        ds.setMaximumPoolSize(POOL_SIZE);
+        ds.setDriverClassName("org.postgresql.Driver");
+        ds.setConnectionTimeout(10000L);
+        ds.setIdleTimeout(200000L);
+        ds.setMinimumIdle(3);
+        ds.setMaximumPoolSize(50);
 
         return ds;
     }

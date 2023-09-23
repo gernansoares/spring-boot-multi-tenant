@@ -1,7 +1,7 @@
 package com.multitenant.example.master.config;
 
+import com.multitenant.example.tenant.exceptions.NotFoundException;
 import com.multitenant.example.master.entity.Tenant;
-import com.multitenant.example.master.exceptions.TenantNotFoundException;
 import com.multitenant.example.master.repository.TenantRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.engine.jdbc.connections.spi.AbstractDataSourceBasedMultiTenantConnectionProviderImpl;
@@ -12,12 +12,13 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 import java.util.*;
 
+/**
+ * Keeps all the datasources references for active tenants
+ */
 @Configuration
 @Slf4j
 public class DataSourceBasedMultiTenantConnectionProviderImpl
         extends AbstractDataSourceBasedMultiTenantConnectionProviderImpl {
-
-    private final String DEFAULT_TENANT_ID = "tenant";
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -34,7 +35,7 @@ public class DataSourceBasedMultiTenantConnectionProviderImpl
     protected DataSource selectAnyDataSource() {
         log.info("Selecting any datasource");
         loadTenants();
-        return dataSources.get(DEFAULT_TENANT_ID);
+        return dataSources.get(TenantIdentifierResolver.DEFAULT_TENANT_ID);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class DataSourceBasedMultiTenantConnectionProviderImpl
 
             tenantOpt.ifPresentOrElse(tenant -> addTenant(tenant),
                     () -> {
-                        throw new TenantNotFoundException(tenantId);
+                        throw new NotFoundException("Tenant not found");
                     });
         }
 

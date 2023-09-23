@@ -1,10 +1,11 @@
 package com.multitenant.example.master.config;
 
-import lombok.extern.slf4j.Slf4j;
-
+/**
+ * Holds the tenant ID for each thread
+ */
 public class TenantContext {
 
-    private static final ThreadLocal<String> CURRENT_TENANT = new ThreadLocal<>();
+    private static final ThreadLocal<String> CURRENT_TENANT = ThreadLocal.withInitial(() -> TenantIdentifierResolver.DEFAULT_TENANT_ID);
 
     public static String getCurrentTenant() {
         return CURRENT_TENANT.get();
