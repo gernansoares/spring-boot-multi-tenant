@@ -24,8 +24,8 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"com.multitenant.example.tenant.*"})
-@EnableJpaRepositories(basePackages = {"com.multitenant.example.tenant.*"},
+@ComponentScan(basePackages = {"com.multitenant.example.master.*"})
+@EnableJpaRepositories(basePackages = {"com.multitenant.example.master.*"},
         entityManagerFactoryRef = "masterEntityManagerFactory",
         transactionManagerRef = "masterTransactionManager")
 public class MasterDatabaseConfig {
@@ -55,7 +55,7 @@ public class MasterDatabaseConfig {
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 
         factory.setDataSource(getMasterDataSource());
-        factory.setPackagesToScan("com.multitenant.example.tenant");
+        factory.setPackagesToScan("com.multitenant.example.master");
         factory.setPersistenceUnitName("multitenant-persistence-unit");
         factory.setJpaVendorAdapter(vendorAdapter);
 

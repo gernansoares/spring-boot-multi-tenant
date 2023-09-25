@@ -1,4 +1,4 @@
-# spring-boot-multi-tenant
+# Sprint Boot Multi-Tenant
 
 Sample project of multi tenant application using database per tenant with Spring Boot 3 and JWT
 
@@ -17,7 +17,9 @@ All components (entities, services, repositories) **bellow com.multitenant.examp
 
 ## How to run
 
-You will **need to create a database named multitenant** to be the master database, will also need to **create a database named tenant for the default tenant client**, then each new tenant should have its own database and be registered in testuser table at the master database. Tables will be auto generated on the first run
+You will **need to create a database named multitenant** to be the master database, will also need to **create a database named tenant for the default tenant client**, then each new tenant should have its own database and be registered in testuser table at the master database. 
+
+Tables will be auto generated on the first run
 
 ## Endpoins
 

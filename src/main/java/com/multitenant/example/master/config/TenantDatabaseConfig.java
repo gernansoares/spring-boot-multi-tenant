@@ -28,8 +28,8 @@ import java.util.Map;
  */
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"com.multitenant.example.domain.*"})
-@EnableJpaRepositories(basePackages = {"com.multitenant.example.domain.*"},
+@ComponentScan(basePackages = {"com.multitenant.example.tenant.*"})
+@EnableJpaRepositories(basePackages = {"com.multitenant.example.tenant.*"},
         entityManagerFactoryRef = "tenantEntityManagerFactory",
         transactionManagerRef = "tenantTransactionManager")
 @Slf4j
@@ -68,7 +68,7 @@ public class TenantDatabaseConfig {
             CurrentTenantIdentifierResolver tenantResolver) {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 
-        factory.setPackagesToScan("com.multitenant.example.domain");
+        factory.setPackagesToScan("com.multitenant.example.tenant");
         factory.setPersistenceUnitName("tenantdb-persistence-unit");
         factory.setJpaVendorAdapter(jpaVendorAdapter());
         factory.setPersistenceProviderClass(HibernatePersistenceProvider.class);

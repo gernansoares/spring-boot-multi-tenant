@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 @Component
-public class MultiTenantConnectionProviderImpl implements MultiTenantConnectionProvider {
+public class MultiTenantDatabaseConnectionProviderImpl implements MultiTenantConnectionProvider {
 
     @Autowired
     public DataSource dataSource;
