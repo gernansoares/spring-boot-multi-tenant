@@ -2,8 +2,8 @@ package com.multitenant.example.tenant.service;
 
 import com.multitenant.example.tenant.config.security.jwt.JwtUtil;
 import com.multitenant.example.tenant.config.security.jwt.UserInfo;
-import com.multitenant.example.tenant.config.service.DomainService;
-import com.multitenant.example.tenant.dto.AuthRequest;
+import com.multitenant.example.tenant.config.service.AutoRollbackService;
+import com.multitenant.example.tenant.dto.AuthRequestDTO;
 import com.multitenant.example.tenant.dto.UserUpdateDTO;
 import com.multitenant.example.tenant.entity.TestUser;
 import com.multitenant.example.tenant.exceptions.*;
@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class TestUserService implements DomainService {
+public class TestUserService implements AutoRollbackService {
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -69,9 +69,7 @@ public class TestUserService implements DomainService {
         testUserRepository.findById(id).ifPresentOrElse(dbUser -> {
             userTokenService.deleteTokens(dbUser);
             testUserRepository.delete(dbUser);
-        }, () -> {
-            throw new NotFoundException("User not found");
-        });
+        }, () -> new NotFoundException("User not found"));
     }
 
     public Optional<TestUser> findByUsername(String username) {
@@ -86,7 +84,7 @@ public class TestUserService implements DomainService {
         return testUserRepository.findAll();
     }
 
-    public String login(AuthRequest request) {
+    public String login(AuthRequestDTO request) {
         Optional<TestUser> userOpt = findByUsername(UserUtils.prepareUsername(request.getUsername()));
 
         TestUser user = userOpt.orElseThrow(() -> new NotFoundException("User not found"));

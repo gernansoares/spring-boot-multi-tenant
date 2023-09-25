@@ -1,8 +1,8 @@
 package com.multitenant.example.tenant.controller;
 
 import com.multitenant.example.master.service.TenantService;
-import com.multitenant.example.tenant.dto.AuthRequest;
-import com.multitenant.example.tenant.dto.AuthResponse;
+import com.multitenant.example.tenant.dto.AuthRequestDTO;
+import com.multitenant.example.tenant.dto.AuthResponseDTO;
 import com.multitenant.example.tenant.service.TestUserService;
 import com.multitenant.example.tenant.service.UserTokenService;
 import com.multitenant.example.master.config.TenantContext;
@@ -37,7 +37,7 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "200", description = "Information is correct, a new token is generated"),
             @ApiResponse(responseCode = "401", description = "Incorrect login information"),
     })
-    public ResponseEntity<AuthResponse> login(@RequestBody @Valid AuthRequest ar) {
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody @Valid AuthRequestDTO ar) {
         String tenantId = tenantService.resolveTenantIdByDomain(ar.getDomain());
         TenantContext.setCurrentTenant(tenantId);
 
@@ -46,7 +46,7 @@ public class AuthenticationController {
         String token = testUserService.login(ar);
 
         log.info("User {} logged in", ar.getUsername());
-        return ResponseEntity.ok(new AuthResponse(token));
+        return ResponseEntity.ok(new AuthResponseDTO(token));
     }
 
 }
