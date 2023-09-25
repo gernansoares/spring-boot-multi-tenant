@@ -36,7 +36,7 @@ import java.util.Map;
 public class TenantDatabaseConfig {
 
     @Autowired
-    private MasterDatabaseConfigProperties masterDatabaseConfigProperties;
+    private MasterDatabaseProperties masterDatabaseProperties;
 
     @Bean(name = "tenantJpaVendorAdapter")
     public JpaVendorAdapter jpaVendorAdapter() {
@@ -52,7 +52,7 @@ public class TenantDatabaseConfig {
     @Bean(name = "multiTenantConnectionProvider")
     @ConditionalOnBean(name = "masterEntityManagerFactory")
     public MultiTenantConnectionProvider multiTenantConnectionProvider() {
-        return new DataSourceMultiTenantConnectionProviderImpl();
+        return new MultiTenantConnectionProviderImpl();
     }
 
     @Bean(name = "currentTenantIdentifierResolver")

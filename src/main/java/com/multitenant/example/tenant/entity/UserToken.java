@@ -20,9 +20,9 @@ public class UserToken {
     private String token;
 
     @ManyToOne
-    private TestUser user;
+    private DemoUser user;
 
-    public UserToken(String token, TestUser user) {
+    public UserToken(String token, DemoUser user) {
         this.token = token;
         this.user = user;
     }

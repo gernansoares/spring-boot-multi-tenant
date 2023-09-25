@@ -6,7 +6,6 @@ import com.multitenant.example.master.repository.TenantRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.engine.jdbc.connections.spi.AbstractDataSourceBasedMultiTenantConnectionProviderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
@@ -17,11 +16,8 @@ import java.util.*;
  */
 @Configuration
 @Slf4j
-public class DataSourceMultiTenantConnectionProviderImpl
+public class MultiTenantConnectionProviderImpl
         extends AbstractDataSourceBasedMultiTenantConnectionProviderImpl {
-
-    @Autowired
-    private ApplicationContext applicationContext;
 
     @Autowired
     private TenantRepository tenantRepository;
@@ -41,7 +37,7 @@ public class DataSourceMultiTenantConnectionProviderImpl
     @Override
     protected DataSource selectDataSource(String tenantIdentifier) {
         String tenantId = TenantContext.getCurrentTenant();
-        log.info("Getting datasource for {}", tenantId);
+        log.debug("Getting datasource for {}", tenantId);
 
         if (!dataSources.containsKey(tenantId)) {
             Optional<Tenant> tenantOpt = tenantRepository.findByConnection_DatabaseIgnoreCase(tenantId);

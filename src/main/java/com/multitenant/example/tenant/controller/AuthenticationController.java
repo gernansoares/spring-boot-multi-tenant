@@ -3,7 +3,7 @@ package com.multitenant.example.tenant.controller;
 import com.multitenant.example.master.service.TenantService;
 import com.multitenant.example.tenant.dto.AuthRequestDTO;
 import com.multitenant.example.tenant.dto.AuthResponseDTO;
-import com.multitenant.example.tenant.service.TestUserService;
+import com.multitenant.example.tenant.service.DemoUserService;
 import com.multitenant.example.tenant.service.UserTokenService;
 import com.multitenant.example.master.config.TenantContext;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
 
     @Autowired
-    private TestUserService testUserService;
+    private DemoUserService demoUserService;
 
     @Autowired
     private UserTokenService userTokenService;
@@ -43,7 +43,7 @@ public class AuthenticationController {
 
         log.info("Logging user with username {}", ar.getUsername());
 
-        String token = testUserService.login(ar);
+        String token = demoUserService.login(ar);
 
         log.info("User {} logged in", ar.getUsername());
         return ResponseEntity.ok(new AuthResponseDTO(token));

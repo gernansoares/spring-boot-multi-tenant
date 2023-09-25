@@ -17,8 +17,8 @@ All components (entities, services, repositories) **bellow com.multitenant.examp
 
 ## How to run
 
-1. **Create a database named multitenant** to be the master database
-2. **Create a database named tenant** for the default tenant client
+1. **Create a database named 'multitenant'** to be the master database
+2. **Create a database named 'tenant'** for the default tenant client
 3. **Run** program one time to generate master database tables 
 4. **Insert the default tenant record** in 'tenant' and 'tenantconnection' tables at master database, using 'tenant' (default tenant ID in TenantIdentifierResolver class) as column domain/database values
 5. **Run** program once more to generate default tenant database tables
@@ -27,7 +27,7 @@ All components (entities, services, repositories) **bellow com.multitenant.examp
 
 * If you want to use schema per tenant, set multitenant.per-schema to true in application.yml
 * When multitenant.per-schema is active, the value in tenant's database field will be used as schema name
-* Table will be auto-generated for the default tenant schema/database only
+* Tables will be auto-generated for the default tenant schema/database only
 * Use TenantContext.setCurrentTenant(<tenant_id>) to change the active thread tenant
 
 ## Endpoins

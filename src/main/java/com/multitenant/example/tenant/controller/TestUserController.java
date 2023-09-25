@@ -1,10 +1,10 @@
 package com.multitenant.example.tenant.controller;
 
-import com.multitenant.example.tenant.dto.UserDTO;
-import com.multitenant.example.tenant.dto.UserUpdateDTO;
-import com.multitenant.example.tenant.entity.TestUser;
+import com.multitenant.example.tenant.dto.ListUserDTO;
+import com.multitenant.example.tenant.dto.UpdateUserDTO;
+import com.multitenant.example.tenant.entity.DemoUser;
 import com.multitenant.example.tenant.exceptions.NotFoundException;
-import com.multitenant.example.tenant.service.TestUserService;
+import com.multitenant.example.tenant.service.DemoUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class TestUserController {
 
     @Autowired
-    private TestUserService testUserService;
+    private DemoUserService demoUserService;
 
     @PutMapping("{userId}")
     @ResponseStatus(code = HttpStatus.OK)
@@ -34,11 +34,11 @@ public class TestUserController {
             @ApiResponse(responseCode = "400", description = "User not found | Password/confirmation does not match | Username already in use"),
     })
     public ResponseEntity<String> update(@PathVariable String userId,
-                                         @RequestBody @Valid UserUpdateDTO userDTO) {
+                                         @RequestBody @Valid UpdateUserDTO userDTO) {
         log.info("Updating user {}", userDTO.getUsername());
 
         userDTO.setId(Long.parseLong(userId));
-        TestUser user = testUserService.update(userDTO);
+        DemoUser user = demoUserService.update(userDTO);
 
         log.info("User {} updated as {} successfully", userDTO.getUsername(), user.getUsername());
 
@@ -55,7 +55,7 @@ public class TestUserController {
     public ResponseEntity delete(@PathVariable String userId) {
         log.info("Deleting user with ID {}", userId);
 
-        testUserService.delete(Long.parseLong(userId));
+        demoUserService.delete(Long.parseLong(userId));
 
         log.info("User with ID {} deleted successfully", userId);
 
@@ -69,15 +69,15 @@ public class TestUserController {
             @ApiResponse(responseCode = "200", description = "User found"),
             @ApiResponse(responseCode = "400", description = "User not found"),
     })
-    public ResponseEntity<UserDTO> findById(@PathVariable String userId) {
+    public ResponseEntity<ListUserDTO> findById(@PathVariable String userId) {
         log.info("Getting user with ID {}", userId);
 
-        TestUser user = testUserService.findById(Long.parseLong(userId))
+        DemoUser user = demoUserService.findById(Long.parseLong(userId))
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
         log.info("User with ID {} returned successfully", userId);
 
-        return ResponseEntity.ok(UserDTO.of(user));
+        return ResponseEntity.ok(ListUserDTO.of(user));
     }
 
     @GetMapping
@@ -86,11 +86,11 @@ public class TestUserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Users list"),
     })
-    public ResponseEntity<List<UserDTO>> findAll() {
+    public ResponseEntity<List<ListUserDTO>> findAll() {
         log.info("Getting all users");
 
-        return ResponseEntity.ok(testUserService.findAll().stream()
-                .map(user -> UserDTO.of(user)).collect(Collectors.toList()));
+        return ResponseEntity.ok(demoUserService.findAll().stream()
+                .map(user -> ListUserDTO.of(user)).collect(Collectors.toList()));
     }
 
 }

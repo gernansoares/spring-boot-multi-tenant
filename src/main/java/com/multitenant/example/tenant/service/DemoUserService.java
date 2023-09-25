@@ -4,10 +4,10 @@ import com.multitenant.example.tenant.config.security.jwt.JwtUtil;
 import com.multitenant.example.tenant.config.security.jwt.UserInfo;
 import com.multitenant.example.tenant.config.service.AutoRollbackService;
 import com.multitenant.example.tenant.dto.AuthRequestDTO;
-import com.multitenant.example.tenant.dto.UserUpdateDTO;
-import com.multitenant.example.tenant.entity.TestUser;
+import com.multitenant.example.tenant.dto.UpdateUserDTO;
+import com.multitenant.example.tenant.entity.DemoUser;
 import com.multitenant.example.tenant.exceptions.*;
-import com.multitenant.example.tenant.repository.TestUserRepository;
+import com.multitenant.example.tenant.repository.DemoUserRepository;
 import com.multitenant.example.tenant.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -18,13 +18,13 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class TestUserService implements AutoRollbackService {
+public class DemoUserService implements AutoRollbackService {
 
     @Autowired
     private JwtUtil jwtUtil;
 
     @Autowired
-    private TestUserRepository testUserRepository;
+    private DemoUserRepository demoUserRepository;
 
     @Autowired
     private UserTokenService userTokenService;
@@ -43,17 +43,17 @@ public class TestUserService implements AutoRollbackService {
         });
     }
 
-    public TestUser create(TestUser user, String passwordConfirm) {
+    public DemoUser create(DemoUser user, String passwordConfirm) {
         validateExistingUsername(user.getId(), user.getUsername());
         validatePasswordAndConfirmationMatch(user.getPassword(), passwordConfirm);
-        return testUserRepository.save(user);
+        return demoUserRepository.save(user);
     }
 
-    public TestUser update(UserUpdateDTO userDTO) {
+    public DemoUser update(UpdateUserDTO userDTO) {
         String username = UserUtils.prepareUsername(userDTO.getUsername());
         String password = UserUtils.encodePassword(userDTO.getPassword());
 
-        TestUser user = testUserRepository.findById(userDTO.getId())
+        DemoUser user = demoUserRepository.findById(userDTO.getId())
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
         validateExistingUsername(user.getId(), username);
@@ -62,32 +62,32 @@ public class TestUserService implements AutoRollbackService {
         user.setName(userDTO.getName());
         user.setUsername(username);
         user.setPassword(password);
-        return testUserRepository.save(user);
+        return demoUserRepository.save(user);
     }
 
     public void delete(Long id) {
-        testUserRepository.findById(id).ifPresentOrElse(dbUser -> {
+        demoUserRepository.findById(id).ifPresentOrElse(dbUser -> {
             userTokenService.deleteTokens(dbUser);
-            testUserRepository.delete(dbUser);
+            demoUserRepository.delete(dbUser);
         }, () -> new NotFoundException("User not found"));
     }
 
-    public Optional<TestUser> findByUsername(String username) {
-        return testUserRepository.findByUsernameIgnoreCase(username);
+    public Optional<DemoUser> findByUsername(String username) {
+        return demoUserRepository.findByUsernameIgnoreCase(username);
     }
 
-    public Optional<TestUser> findById(Long id) {
-        return testUserRepository.findById(id);
+    public Optional<DemoUser> findById(Long id) {
+        return demoUserRepository.findById(id);
     }
 
-    public List<TestUser> findAll() {
-        return testUserRepository.findAll();
+    public List<DemoUser> findAll() {
+        return demoUserRepository.findAll();
     }
 
     public String login(AuthRequestDTO request) {
-        Optional<TestUser> userOpt = findByUsername(UserUtils.prepareUsername(request.getUsername()));
+        Optional<DemoUser> userOpt = findByUsername(UserUtils.prepareUsername(request.getUsername()));
 
-        TestUser user = userOpt.orElseThrow(() -> new NotFoundException("User not found"));
+        DemoUser user = userOpt.orElseThrow(() -> new NotFoundException("User not found"));
 
         if (!user.isEnabled()) {
             throw new DisabledException();

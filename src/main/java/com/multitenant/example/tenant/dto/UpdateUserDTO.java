@@ -6,7 +6,7 @@ import com.multitenant.example.tenant.validation.UsernameValidation;
 import lombok.Data;
 
 @Data
-public class UserUpdateDTO {
+public class UpdateUserDTO {
 
     private Long id;
 

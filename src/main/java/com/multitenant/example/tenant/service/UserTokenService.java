@@ -1,7 +1,7 @@
 package com.multitenant.example.tenant.service;
 
 import com.multitenant.example.tenant.config.service.AutoRollbackService;
-import com.multitenant.example.tenant.entity.TestUser;
+import com.multitenant.example.tenant.entity.DemoUser;
 import com.multitenant.example.tenant.entity.UserToken;
 import com.multitenant.example.tenant.exceptions.NotFoundException;
 import com.multitenant.example.tenant.exceptions.ValueAlreadyExistsException;
@@ -17,7 +17,7 @@ public class UserTokenService implements AutoRollbackService {
     @Autowired
     private UserTokenRepository userTokenRepository;
 
-    public UserToken registerToken(String generatedToken, TestUser user) {
+    public UserToken registerToken(String generatedToken, DemoUser user) {
         Optional<UserToken> tokenOpt = userTokenRepository.findByToken(generatedToken);
         tokenOpt.ifPresent(userToken -> new ValueAlreadyExistsException("Token already exists"));
 
@@ -35,7 +35,7 @@ public class UserTokenService implements AutoRollbackService {
         userTokenRepository.delete(tokenOpt.get());
     }
 
-    public void deleteTokens(TestUser user) {
+    public void deleteTokens(DemoUser user) {
         userTokenRepository.deleteByUserId(user.getId());
     }
 

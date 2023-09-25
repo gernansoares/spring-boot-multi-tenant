@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class TestUser {
+public class DemoUser {
 
     @Id
     @GeneratedValue
@@ -34,8 +34,8 @@ public class TestUser {
 
     private boolean enabled;
 
-    public static TestUser of(NewUserDTO newUserDTO) {
-        TestUser user = new TestUser();
+    public static DemoUser of(NewUserDTO newUserDTO) {
+        DemoUser user = new DemoUser();
         user.setName(newUserDTO.getName());
         user.setUsername(UserUtils.prepareUsername(newUserDTO.getUsername()));
         user.setPassword(UserUtils.encodePassword(newUserDTO.getPassword()));

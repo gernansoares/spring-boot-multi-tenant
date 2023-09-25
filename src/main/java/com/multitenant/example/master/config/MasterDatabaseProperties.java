@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties("multitenant.master.datasource")
 @Data
-public class MasterDatabaseConfigProperties {
+public class MasterDatabaseProperties {
 
     private String url;
 

@@ -32,20 +32,20 @@ import java.util.Properties;
 public class MasterDatabaseConfig {
 
     @Autowired
-    private MasterDatabaseConfigProperties masterDatabaseConfigProperties;
+    private MasterDatabaseProperties masterDatabaseProperties;
 
     @Bean(name = "masterDataSource")
     public DataSource getMasterDataSource() {
         HikariDataSource hikariDataSource = new HikariDataSource();
-        hikariDataSource.setUsername(masterDatabaseConfigProperties.getUsername());
-        hikariDataSource.setPassword(masterDatabaseConfigProperties.getPassword());
-        hikariDataSource.setJdbcUrl(masterDatabaseConfigProperties.getUrl());
-        hikariDataSource.setPoolName(masterDatabaseConfigProperties.getPoolName());
-        hikariDataSource.setDriverClassName(masterDatabaseConfigProperties.getDriverClassName());
-        hikariDataSource.setMaximumPoolSize(masterDatabaseConfigProperties.getMaxPoolSize());
-        hikariDataSource.setMinimumIdle(masterDatabaseConfigProperties.getMinIdle());
-        hikariDataSource.setConnectionTimeout(masterDatabaseConfigProperties.getConnectionTimeout());
-        hikariDataSource.setIdleTimeout(masterDatabaseConfigProperties.getIdleTimeout());
+        hikariDataSource.setUsername(masterDatabaseProperties.getUsername());
+        hikariDataSource.setPassword(masterDatabaseProperties.getPassword());
+        hikariDataSource.setJdbcUrl(masterDatabaseProperties.getUrl());
+        hikariDataSource.setPoolName(masterDatabaseProperties.getPoolName());
+        hikariDataSource.setDriverClassName(masterDatabaseProperties.getDriverClassName());
+        hikariDataSource.setMaximumPoolSize(masterDatabaseProperties.getMaxPoolSize());
+        hikariDataSource.setMinimumIdle(masterDatabaseProperties.getMinIdle());
+        hikariDataSource.setConnectionTimeout(masterDatabaseProperties.getConnectionTimeout());
+        hikariDataSource.setIdleTimeout(masterDatabaseProperties.getIdleTimeout());
         return hikariDataSource;
     }
 
