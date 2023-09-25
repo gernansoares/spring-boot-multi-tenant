@@ -44,14 +44,15 @@ public class TenantDatabaseConfig {
     }
 
     @Bean(name = "tenantTransactionManager")
-    public JpaTransactionManager transactionManager(@Qualifier("tenantEntityManagerFactory") EntityManagerFactory tenantEntityManager) {
+    public JpaTransactionManager transactionManager(@Qualifier("tenantEntityManagerFactory")
+                                                    EntityManagerFactory tenantEntityManager) {
         return new JpaTransactionManager(tenantEntityManager);
     }
 
-    @Bean(name = "datasourceBasedMultiTenantConnectionProvider")
+    @Bean(name = "multiTenantConnectionProvider")
     @ConditionalOnBean(name = "masterEntityManagerFactory")
     public MultiTenantConnectionProvider multiTenantConnectionProvider() {
-        return new DataSourceBasedMultiTenantConnectionProviderImpl();
+        return new DataSourceMultiTenantConnectionProviderImpl();
     }
 
     @Bean(name = "currentTenantIdentifierResolver")
@@ -60,9 +61,9 @@ public class TenantDatabaseConfig {
     }
 
     @Bean(name = "tenantEntityManagerFactory")
-    @ConditionalOnBean(name = "datasourceBasedMultiTenantConnectionProvider")
+    @ConditionalOnBean(name = "multiTenantConnectionProvider")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-            @Qualifier("datasourceBasedMultiTenantConnectionProvider")
+            @Qualifier("multiTenantConnectionProvider")
             MultiTenantConnectionProvider connectionProvider,
             @Qualifier("currentTenantIdentifierResolver")
             CurrentTenantIdentifierResolver tenantResolver) {

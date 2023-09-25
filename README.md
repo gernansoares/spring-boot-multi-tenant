@@ -2,7 +2,7 @@
 
 Sample project of multi tenant application using schema or database per tenant with Spring Boot 3 and JWT
 
-A master database exists to maintain information about the tenants or the application itself, then each tenant will have its own schema/database
+A master database exists to maintain information about the tenants or the application itself, each tenant will have its own schema/database
 
 All components (entities, services, repositories) **bellow com.multitenant.example.master will be scanned as part of the master scope**, while everything **bellow com.multitenant.example.tenant will be scanned as part of the tenants scope** 
 

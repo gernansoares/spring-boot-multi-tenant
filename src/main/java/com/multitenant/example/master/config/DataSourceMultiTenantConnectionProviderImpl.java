@@ -17,7 +17,7 @@ import java.util.*;
  */
 @Configuration
 @Slf4j
-public class DataSourceBasedMultiTenantConnectionProviderImpl
+public class DataSourceMultiTenantConnectionProviderImpl
         extends AbstractDataSourceBasedMultiTenantConnectionProviderImpl {
 
     @Autowired

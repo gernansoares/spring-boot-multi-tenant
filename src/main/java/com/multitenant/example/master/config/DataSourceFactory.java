@@ -30,10 +30,10 @@ public class DataSourceFactory {
         ds.setJdbcUrl(connectionInfo.getUrl());
         ds.setPoolName(String.format(CONNECTION_POOL_NAME, connectionInfo.getDatabase()));
         ds.setDriverClassName("org.postgresql.Driver");
+        ds.setMaximumPoolSize(50);
+        ds.setMinimumIdle(3);
         ds.setConnectionTimeout(10000L);
         ds.setIdleTimeout(200000L);
-        ds.setMinimumIdle(3);
-        ds.setMaximumPoolSize(50);
         if (schema) {
             ds.setSchema(tenant.getConnection().getDatabase());
         }

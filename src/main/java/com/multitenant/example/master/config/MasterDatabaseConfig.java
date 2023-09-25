@@ -2,6 +2,7 @@ package com.multitenant.example.master.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
+import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -39,8 +40,8 @@ public class MasterDatabaseConfig {
         hikariDataSource.setUsername(masterDatabaseConfigProperties.getUsername());
         hikariDataSource.setPassword(masterDatabaseConfigProperties.getPassword());
         hikariDataSource.setJdbcUrl(masterDatabaseConfigProperties.getUrl());
-        hikariDataSource.setDriverClassName(masterDatabaseConfigProperties.getDriverClassName());
         hikariDataSource.setPoolName(masterDatabaseConfigProperties.getPoolName());
+        hikariDataSource.setDriverClassName(masterDatabaseConfigProperties.getDriverClassName());
         hikariDataSource.setMaximumPoolSize(masterDatabaseConfigProperties.getMaxPoolSize());
         hikariDataSource.setMinimumIdle(masterDatabaseConfigProperties.getMinIdle());
         hikariDataSource.setConnectionTimeout(masterDatabaseConfigProperties.getConnectionTimeout());
@@ -63,6 +64,7 @@ public class MasterDatabaseConfig {
         properties.put(org.hibernate.cfg.Environment.SHOW_SQL, false);
         properties.put(org.hibernate.cfg.Environment.FORMAT_SQL, true);
         properties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "update");
+        properties.put(Environment.ENABLE_LAZY_LOAD_NO_TRANS, "true");
         factory.setJpaProperties(properties);
 
         return factory;
