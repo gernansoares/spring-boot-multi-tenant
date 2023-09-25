@@ -22,7 +22,7 @@ public class NewUserDTO {
     private String passwordConfirm;
 
     @NotBlank
-    private String tenantId;
+    private String domain;
 
 
 }

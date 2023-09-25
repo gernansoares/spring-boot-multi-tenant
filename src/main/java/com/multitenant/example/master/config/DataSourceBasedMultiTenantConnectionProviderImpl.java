@@ -44,12 +44,10 @@ public class DataSourceBasedMultiTenantConnectionProviderImpl
         log.info("Getting datasource for {}", tenantId);
 
         if (!dataSources.containsKey(tenantId)) {
-            Optional<Tenant> tenantOpt = tenantRepository.findByConnection_Database(tenantId);
+            Optional<Tenant> tenantOpt = tenantRepository.findByConnection_DatabaseIgnoreCase(tenantId);
 
             tenantOpt.ifPresentOrElse(tenant -> addTenant(tenant),
-                    () -> {
-                        throw new NotFoundException("Tenant not found");
-                    });
+                    () -> new NotFoundException("Tenant not found"));
         }
 
         return this.dataSources.get(tenantId);
@@ -59,9 +57,8 @@ public class DataSourceBasedMultiTenantConnectionProviderImpl
         if (dataSources.isEmpty()) {
             log.info("Getting all datasources available");
 
-            tenantRepository.findAll().forEach(tenant -> {
-                addTenant(tenant);
-            });
+            tenantRepository.findAll().forEach(tenant -> addTenant(tenant));
+
         }
     }
 

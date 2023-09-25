@@ -98,7 +98,7 @@ public class TestUserService implements DomainService {
         validatePasswordAndConfirmationMatch(user.getPassword(), request.getPassword());
 
         UserInfo userInfo = new UserInfo(user.getUsername(), user.getPassword(), user.isEnabled(), List.of("USER"));
-        String token = jwtUtil.generateToken(userInfo, request.getTenantId());
+        String token = jwtUtil.generateToken(userInfo, request.getDomain());
 
         userTokenService.registerToken(token, user);
 

@@ -60,7 +60,6 @@ public class MasterDatabaseConfig {
         factory.setJpaVendorAdapter(vendorAdapter);
 
         Properties properties = new Properties();
-        properties.put(org.hibernate.cfg.Environment.DIALECT, masterDatabaseConfigProperties.getDialect());
         properties.put(org.hibernate.cfg.Environment.SHOW_SQL, false);
         properties.put(org.hibernate.cfg.Environment.FORMAT_SQL, true);
         properties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "update");

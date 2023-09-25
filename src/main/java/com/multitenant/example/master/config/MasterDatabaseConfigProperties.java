@@ -20,8 +20,6 @@ public class MasterDatabaseConfigProperties {
 
     private String driverClassName;
 
-    private String dialect;
-
     private long connectionTimeout;
 
     private int maxPoolSize;

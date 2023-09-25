@@ -19,12 +19,13 @@ spring:
     name: spring-boot-multi-tenant
 
 multitenant:
+  per-schema: false
+
   master:
     datasource:
       url: jdbc:postgresql://localhost:5432/multitenant
       username: postgres
       password: "root"
-      dialect: org.hibernate.dialect.PostgreSQLDialect
       driver-class-name: org.postgresql.Driver
       connection-timeout: 20000
       max-pool-size: 250

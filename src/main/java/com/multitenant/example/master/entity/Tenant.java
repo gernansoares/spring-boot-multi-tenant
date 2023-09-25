@@ -15,12 +15,12 @@ public class Tenant {
 
     @Size(max = 256)
     @NotBlank
-    private String nome;
+    private String name;
 
     @Size(max = 256)
     @NotBlank
     @Column(unique = true)
-    private String dominio;
+    private String domain;
 
     @NotBlank
     private Boolean status;

@@ -76,7 +76,6 @@ public class TenantDatabaseConfig {
         Map<String, Object> properties = new HashMap<>();
         properties.put(Environment.MULTI_TENANT_CONNECTION_PROVIDER, connectionProvider);
         properties.put(Environment.MULTI_TENANT_IDENTIFIER_RESOLVER, tenantResolver);
-        properties.put(Environment.DIALECT, masterDatabaseConfigProperties.getDialect());
         properties.put(Environment.SHOW_SQL, false);
         properties.put(Environment.FORMAT_SQL, true);
         properties.put(Environment.HBM2DDL_AUTO, "update");

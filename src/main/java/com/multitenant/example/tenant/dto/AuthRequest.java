@@ -17,6 +17,6 @@ public class  AuthRequest {
     private String password;
 
     @NotBlank
-    private String tenantId;
+    private String domain;
 
 }

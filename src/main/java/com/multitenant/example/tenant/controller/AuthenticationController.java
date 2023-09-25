@@ -1,5 +1,6 @@
 package com.multitenant.example.tenant.controller;
 
+import com.multitenant.example.master.service.TenantService;
 import com.multitenant.example.tenant.dto.AuthRequest;
 import com.multitenant.example.tenant.dto.AuthResponse;
 import com.multitenant.example.tenant.service.TestUserService;
@@ -26,6 +27,9 @@ public class AuthenticationController {
     @Autowired
     private UserTokenService userTokenService;
 
+    @Autowired
+    private TenantService tenantService;
+
     @PostMapping("/login")
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "Provides user authentication by checking username and password")
@@ -34,7 +38,7 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "401", description = "Incorrect login information"),
     })
     public ResponseEntity<AuthResponse> login(@RequestBody @Valid AuthRequest ar) {
-        String tenantId = ar.getTenantId();
+        String tenantId = tenantService.resolveTenantIdByDomain(ar.getDomain());
         TenantContext.setCurrentTenant(tenantId);
 
         log.info("Logging user with username {}", ar.getUsername());

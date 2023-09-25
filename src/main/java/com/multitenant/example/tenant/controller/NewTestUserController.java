@@ -1,5 +1,6 @@
 package com.multitenant.example.tenant.controller;
 
+import com.multitenant.example.master.service.TenantService;
 import com.multitenant.example.tenant.dto.NewUserDTO;
 import com.multitenant.example.tenant.entity.TestUser;
 import com.multitenant.example.tenant.service.TestUserService;
@@ -22,6 +23,9 @@ public class NewTestUserController {
     @Autowired
     private TestUserService testUserService;
 
+    @Autowired
+    private TenantService tenantService;
+
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     @Operation(summary = "Creates a new user and returns its username")
@@ -30,7 +34,8 @@ public class NewTestUserController {
             @ApiResponse(responseCode = "400", description = "Password/confirmation does not match | Username already in use"),
     })
     public ResponseEntity<String> create(@RequestBody @Valid NewUserDTO newUserDto) {
-        TenantContext.setCurrentTenant(newUserDto.getTenantId());
+        String tenantId = tenantService.resolveTenantIdByDomain(newUserDto.getDomain());
+        TenantContext.setCurrentTenant(tenantId);
         TestUser user = TestUser.of(newUserDto);
 
         log.info("Adding user {}", user.getUsername());

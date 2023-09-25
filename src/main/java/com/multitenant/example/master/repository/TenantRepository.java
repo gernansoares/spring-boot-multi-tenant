@@ -9,6 +9,7 @@ import java.util.Optional;
 @Repository
 public interface TenantRepository extends JpaRepository<Tenant, Long> {
 
-    Optional<Tenant> findByConnection_Database(String database);
+    Optional<Tenant> findByConnection_DatabaseIgnoreCase(String database);
+    Optional<Tenant> findByDomainIgnoreCase(String domain);
 
 }
