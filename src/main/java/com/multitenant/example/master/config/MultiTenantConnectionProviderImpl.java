@@ -1,6 +1,5 @@
 package com.multitenant.example.master.config;
 
-import com.multitenant.example.tenant.exceptions.NotFoundException;
 import com.multitenant.example.master.entity.Tenant;
 import com.multitenant.example.master.repository.TenantRepository;
 import lombok.extern.slf4j.Slf4j;
