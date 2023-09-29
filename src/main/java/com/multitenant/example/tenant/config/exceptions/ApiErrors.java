@@ -1,4 +1,4 @@
-package com.multitenant.example.tenant.exceptions;
+package com.multitenant.example.tenant.config.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

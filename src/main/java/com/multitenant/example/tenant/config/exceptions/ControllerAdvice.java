@@ -1,7 +1,5 @@
 package com.multitenant.example.tenant.config.exceptions;
 
-import com.multitenant.example.tenant.exceptions.ApiErrors;
-import com.multitenant.example.tenant.exceptions.InternalException;
 import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,9 +30,9 @@ public class ControllerAdvice {
         return new ApiErrors(mensagens);
     }
 
-    @ExceptionHandler(InternalException.class)
+    @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity handleErrors(InternalException exception) {
+    public ResponseEntity handleErrors(RuntimeException exception) {
         log.error(exception.getMessage());
         String mensagemErro = exception.getMessage();
         return ResponseEntity.badRequest().body(mensagemErro);

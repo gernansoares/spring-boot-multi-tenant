@@ -43,7 +43,7 @@ public class MultiTenantConnectionProviderImpl
             Optional<Tenant> tenantOpt = tenantRepository.findByConnection_DatabaseIgnoreCase(tenantId);
 
             tenantOpt.ifPresentOrElse(tenant -> addTenant(tenant),
-                    () -> new NotFoundException("Tenant not found"));
+                    () -> new IllegalArgumentException("Tenant not found"));
         }
 
         return this.dataSources.get(tenantId);

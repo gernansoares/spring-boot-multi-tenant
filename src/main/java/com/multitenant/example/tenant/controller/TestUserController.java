@@ -3,7 +3,6 @@ package com.multitenant.example.tenant.controller;
 import com.multitenant.example.tenant.dto.ListUserDTO;
 import com.multitenant.example.tenant.dto.UpdateUserDTO;
 import com.multitenant.example.tenant.entity.DemoUser;
-import com.multitenant.example.tenant.exceptions.NotFoundException;
 import com.multitenant.example.tenant.service.DemoUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -73,7 +72,7 @@ public class TestUserController {
         log.info("Getting user with ID {}", userId);
 
         DemoUser user = demoUserService.findById(Long.parseLong(userId))
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         log.info("User with ID {} returned successfully", userId);
 

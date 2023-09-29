@@ -6,7 +6,6 @@ import com.multitenant.example.tenant.config.service.AutoRollbackService;
 import com.multitenant.example.tenant.dto.AuthRequestDTO;
 import com.multitenant.example.tenant.dto.UpdateUserDTO;
 import com.multitenant.example.tenant.entity.DemoUser;
-import com.multitenant.example.tenant.exceptions.*;
 import com.multitenant.example.tenant.repository.DemoUserRepository;
 import com.multitenant.example.tenant.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +30,14 @@ public class DemoUserService implements AutoRollbackService {
 
     private void validatePasswordAndConfirmationMatch(String hashedPassword, String passwordConfirm) {
         if (!BCrypt.checkpw(passwordConfirm, hashedPassword)) {
-            throw new InvalidInfoException("Password/confirmation does not match");
+            throw new IllegalArgumentException("Password/confirmation does not match");
         }
     }
 
     private void validateExistingUsername(Long idUser, String username) {
         findByUsername(username).ifPresent(dbUser -> {
             if (!Objects.equals(dbUser.getId(), idUser)) {
-                throw new ValueAlreadyExistsException("Username already exists");
+                throw new IllegalArgumentException("Username already exists");
             }
         });
     }
@@ -54,7 +53,7 @@ public class DemoUserService implements AutoRollbackService {
         String password = UserUtils.encodePassword(userDTO.getPassword());
 
         DemoUser user = demoUserRepository.findById(userDTO.getId())
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         validateExistingUsername(user.getId(), username);
         validatePasswordAndConfirmationMatch(password, userDTO.getPasswordConfirm());
@@ -69,7 +68,7 @@ public class DemoUserService implements AutoRollbackService {
         demoUserRepository.findById(id).ifPresentOrElse(dbUser -> {
             userTokenService.deleteTokens(dbUser);
             demoUserRepository.delete(dbUser);
-        }, () -> new NotFoundException("User not found"));
+        }, () -> new IllegalArgumentException("User not found"));
     }
 
     public Optional<DemoUser> findByUsername(String username) {
@@ -87,11 +86,7 @@ public class DemoUserService implements AutoRollbackService {
     public String login(AuthRequestDTO request) {
         Optional<DemoUser> userOpt = findByUsername(UserUtils.prepareUsername(request.getUsername()));
 
-        DemoUser user = userOpt.orElseThrow(() -> new NotFoundException("User not found"));
-
-        if (!user.isEnabled()) {
-            throw new DisabledException();
-        }
+        DemoUser user = userOpt.orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         validatePasswordAndConfirmationMatch(user.getPassword(), request.getPassword());
 
