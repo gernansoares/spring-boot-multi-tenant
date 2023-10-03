@@ -19,9 +19,8 @@ All components (entities, services, repositories) **bellow com.multitenant.examp
 
 1. **Create a database named 'multitenant'** to be the master database
 2. **Create a database named 'tenant'** for the default tenant client
-3. **Run** program one time to generate master database tables 
-4. **Insert the default tenant record** in 'tenant' and 'tenantconnection' tables at master database, using 'tenant' (default tenant ID in TenantIdentifierResolver class) as column domain/database values
-5. **Run** program once more to generate default tenant database tables
+3. **Execute SQL** in resources/default.sql at multitenant database, it will create the tenants management tables and insert the default tenant register  
+4. **Run** the application to generate default tenant tables
 
 ## Extra information
 
