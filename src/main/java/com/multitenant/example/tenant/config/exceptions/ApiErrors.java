@@ -6,14 +6,14 @@ import lombok.Data;
 import java.util.Arrays;
 import java.util.List;
 
-@AllArgsConstructor
 @Data
+@AllArgsConstructor
 public class ApiErrors {
 
-    private List<String> erros;
+    private List<String> errors;
 
     public ApiErrors(String message) {
-        this.erros = Arrays.asList(message);
+        this.errors = Arrays.asList(message);
     }
 
 }

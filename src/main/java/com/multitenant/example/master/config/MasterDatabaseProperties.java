@@ -28,6 +28,4 @@ public class MasterDatabaseProperties {
 
     private int minIdle;
 
-    private String poolName;
-
 }

@@ -1,5 +1,6 @@
 package com.multitenant.example.tenant.service;
 
+import com.multitenant.example.master.config.TenantContext;
 import com.multitenant.example.tenant.config.security.jwt.JwtUtil;
 import com.multitenant.example.tenant.config.security.jwt.UserInfo;
 import com.multitenant.example.tenant.config.service.AutoRollbackService;
@@ -91,7 +92,7 @@ public class DemoUserService implements AutoRollbackService {
         validatePasswordAndConfirmationMatch(user.getPassword(), request.getPassword());
 
         UserInfo userInfo = new UserInfo(user.getUsername(), user.getPassword(), user.isEnabled(), List.of("USER"));
-        String token = jwtUtil.generateToken(userInfo, request.getDomain());
+        String token = jwtUtil.generateToken(userInfo, TenantContext.getCurrentTenant());
 
         userTokenService.registerToken(token, user);
 

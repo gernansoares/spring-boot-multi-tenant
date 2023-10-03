@@ -36,6 +36,7 @@ public class NewTestUserController {
     public ResponseEntity<String> create(@RequestBody @Valid NewUserDTO newUserDto) {
         String tenantId = tenantService.resolveTenantIdByDomain(newUserDto.getDomain());
         TenantContext.setCurrentTenant(tenantId);
+
         DemoUser user = DemoUser.of(newUserDto);
 
         log.info("Adding user {}", user.getUsername());

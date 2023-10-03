@@ -1,8 +1,8 @@
 server:
+  port: 8081
+
   profiles:
     active: default
-
-  port: 8081
 
   tomcat:
     max-keep-alive-requests: 100
@@ -31,4 +31,3 @@ multitenant:
       max-pool-size: 250
       idle-timeout: 300000
       min-idle: 5
-      pool-name: multitenant-connection-pool

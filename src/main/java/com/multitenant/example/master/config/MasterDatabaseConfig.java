@@ -40,12 +40,12 @@ public class MasterDatabaseConfig {
         hikariDataSource.setUsername(masterDatabaseProperties.getUsername());
         hikariDataSource.setPassword(masterDatabaseProperties.getPassword());
         hikariDataSource.setJdbcUrl(masterDatabaseProperties.getUrl());
-        hikariDataSource.setPoolName(masterDatabaseProperties.getPoolName());
         hikariDataSource.setDriverClassName(masterDatabaseProperties.getDriverClassName());
         hikariDataSource.setMaximumPoolSize(masterDatabaseProperties.getMaxPoolSize());
         hikariDataSource.setMinimumIdle(masterDatabaseProperties.getMinIdle());
         hikariDataSource.setConnectionTimeout(masterDatabaseProperties.getConnectionTimeout());
         hikariDataSource.setIdleTimeout(masterDatabaseProperties.getIdleTimeout());
+        hikariDataSource.setPoolName("multitenant-connection-pool");
         return hikariDataSource;
     }
 
@@ -61,9 +61,9 @@ public class MasterDatabaseConfig {
         factory.setJpaVendorAdapter(vendorAdapter);
 
         Properties properties = new Properties();
-        properties.put(org.hibernate.cfg.Environment.SHOW_SQL, false);
-        properties.put(org.hibernate.cfg.Environment.FORMAT_SQL, true);
-        properties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "update");
+        properties.put(Environment.SHOW_SQL, false);
+        properties.put(Environment.FORMAT_SQL, true);
+        properties.put(Environment.HBM2DDL_AUTO, "update");
         properties.put(Environment.ENABLE_LAZY_LOAD_NO_TRANS, "true");
         factory.setJpaProperties(properties);
 
